@@ -1,120 +1,98 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>khangshark123 - Trang cá nhân</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <style>
     body {
       margin: 0; padding: 0;
       font-family: 'Segoe UI', sans-serif;
       background: url('https://i.pinimg.com/1200x/53/f6/8f/53f68f33cf6ef24468c05667c2982c46.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-      min-height: 100vh; text-align: center;
-      padding-top: 60px; /* giữ như bản gốc */
-      overflow-x: hidden; position: relative;
+      background-size: cover; color: white; text-align: center;
+      display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+      padding-top: 90px; position: relative; overflow-x: hidden;
     }
-    body::before {
-      content: ""; position: fixed; inset: 0;
+    body::before { content:""; position:fixed; inset:0;
       background: linear-gradient(to right, rgba(30, 60, 114, 0.6), rgba(42, 82, 152, 0.6));
-      z-index: -1;
-    }
+      z-index:-1; }
 
-    /* ====== Thanh thông tin mỏng ở đầu (đồng hồ + uptime) ====== */
-    .topbar {
-      position: fixed; top: 6px; left: 50%; transform: translateX(-50%);
-      background: rgba(0,0,0,0.38);
-      padding: 6px 12px; border-radius: 10px;
-      backdrop-filter: blur(5px);
-      z-index: 1000;
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-      user-select: none;
+    /* Topbar: đồng hồ + uptime */
+    .topbar{
+      position:fixed; top:10px; left:50%; transform:translateX(-50%);
+      background: rgba(0,0,0,0.42); padding:6px 12px; border-radius:12px; backdrop-filter: blur(6px);
+      display:flex; flex-direction:column; align-items:center; gap:2px; user-select:none; z-index:1000;
     }
-    .clock { font-weight: 700; font-size: 18px; letter-spacing: .5px }
-    .uptime { font-size: 12px; color: #ffeb3b }
+    .clock{font-weight:700; font-size:18px; letter-spacing:.5px}
+    .uptime{font-size:12px; color:#ffeb3b}
 
-    h1 { font-size: 3em; margin-bottom: 10px; min-height: 60px; } /* giữ nguyên */
+    h1 { font-size: 3em; margin: 10px 0; min-height: 60px; }
     .typed-cursor { font-weight: bold; font-size: 1.2em; color: #fff; }
-    p { font-size: 1.2em; max-width: 500px; margin-bottom: 20px; } /* giữ nguyên */
+    p { font-size: 1.2em; max-width: 500px; margin-bottom: 20px; }
 
-    .button {
-      margin: 15px; padding: 10px 20px; font-size: 1em; border: none; border-radius: 5px;
-      background-color: #ffffff; color: #2a5298; cursor: pointer; transition: background 0.3s ease;
-    }
-    .button:hover { background-color: #dcdcdc; }
-
-    iframe {
-      margin: 30px 0; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.4);
-    }
+    iframe { margin: 30px 0; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.4); }
 
     .links { margin-top: 20px; line-height: 1.8; font-size: 1em; }
     a { color: #ffeb3b; text-decoration: none; }
     a:hover { text-decoration: underline; }
-
     footer { margin-top: 40px; font-size: 0.9em; color: #ccc; }
 
-    /* ====== Black hole nhỏ mượt ====== */
-    .black-hole {
-      position: fixed; width: 72px; height: 72px;
-      pointer-events: none; z-index: 5;
-      transform: translate(-50%, -50%); border-radius: 50%;
-      background: radial-gradient(circle at 50% 50%,
-        rgba(0,0,0,0.88) 0%,
-        rgba(0,0,0,0.55) 38%,
-        rgba(0,0,0,0.20) 66%,
+    /* Hố đen nhỏ + neon nhẹ */
+    .black-hole{
+      position:fixed; width:64px; height:64px; pointer-events:none; z-index:5;
+      transform:translate(-50%,-50%); border-radius:50%;
+      background:radial-gradient(circle at 50% 50%,
+        rgba(0,0,0,.88) 0%,
+        rgba(0,0,0,.55) 38%,
+        rgba(0,0,0,.20) 66%,
         rgba(0,0,0,0) 82%);
-      filter: blur(9px);
-      animation: spin 9s linear infinite, pulse 4.5s ease-in-out infinite;
-      opacity: .95;
+      filter:blur(6px) drop-shadow(0 0 6px #00ffffcc);
+      animation:spin 9s linear infinite, pulse 4.5s ease-in-out infinite; opacity:.95;
     }
-    @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg) } }
-    @keyframes pulse { 50% { transform: translate(-50%, -50%) scale(1.03) } }
+    @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+    @keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.03)}}
 
-    /* ====== Vùng điều khiển âm lượng ====== */
-    .volume-control {
-      margin-top: 10px; display: flex; align-items: center; gap: 10px; color: #fff; justify-content: center;
+    /* Điều khiển nhạc nền (YouTube ẩn) */
+    .audio-row{margin-top:8px; display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap}
+    .button {
+      margin: 6px 0; padding: 8px 12px; font-size: 0.95em;
+      border: none; border-radius: 8px; background-color: #ffffff; color: #2a5298; cursor: pointer;
+      transition: background .2s ease;
     }
-    input[type=range] { width: 150px; }
-    .audio-note { font-size: 12px; opacity: .9; margin-top: 4px; }
+    .button:hover { background-color: #e9e9e9; }
+    input[type=range]{ width: 160px; }
+    .hint{ font-size:12px; opacity:.9; margin-top:6px }
   </style>
 </head>
 <body>
 
-  <!-- Top info: Clock + Uptime -->
+  <!-- Topbar -->
   <div class="topbar">
     <div id="clock" class="clock">00:00:00</div>
     <div id="existTime" class="uptime">Website đã tồn tại: —</div>
   </div>
 
-  <!-- Black hole -->
+  <!-- Hố đen -->
   <div id="blackHole" class="black-hole"></div>
 
   <h1><span id="typed-text"></span></h1>
 
   <p>Mình là <strong>Tuan Khang &lt;3</strong> — Khangshark123 profile 🦈</p>
 
-  <!-- Video chính (giữ nguyên) -->
-  <iframe width="560" height="315" 
-    src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=0&loop=1&playlist=dr147S_qAZE" 
-    title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
+  <!-- Video anime hiện giữa trang (giữ nguyên) -->
+  <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=0&loop=1&playlist=dr147S_qAZE"
+    title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-  <!-- Nhạc nền MP3 (tự host trong repo) -->
-  <!-- Đặt file vào cùng thư mục: ./music.mp3  (hoặc ./assets/music.mp3 và sửa src) -->
-  <audio id="bgMusic" controls autoplay loop muted controlsList="nodownload noplaybackrate">
-    <source src="./music.mp3" type="audio/mpeg">
-  </audio>
-  <div class="volume-control">
+  <!-- Nhạc nền từ YouTube (ẩn player) -->
+  <div id="yt-music" style="width:0;height:0;overflow:hidden;position:absolute;"></div>
+  <div class="audio-row">
     🔊 Âm lượng:
     <input type="range" id="volumeSlider" min="0" max="100" value="70">
-    <button id="playBtn" class="button" style="padding:6px 10px">Bật nhạc</button>
+    <button id="playBtn" class="button">Bật nhạc</button>
   </div>
-  <div class="audio-note">(Nếu trình duyệt chặn autoplay, bấm “Bật nhạc” một lần là phát.)</div>
-
-  <button class="button" onclick="alert('Cảm ơn bạn đã ghé thăm profile của tôi...!')">Click here...!</button>
+  <div class="hint">(Nếu nhạc chưa phát, bấm “Bật nhạc” một lần để cấp quyền phát âm thanh.)</div>
 
   <div class="links">
     📧 Gmail: <a href="mailto:khangsadboy2607@gmail.com">khangsadboy2607@gmail.com</a><br>
@@ -124,14 +102,16 @@
 
   <footer>&copy; 2025 • Create by Tuan Khang 🦈💢</footer>
 
+  <!-- Typed -->
   <script>
-    // Typed giữ nguyên tinh thần bản gốc
     new Typed("#typed-text", {
       strings: ["Wellcommee !!!", "Chào mừng đến với profile KhangShark123 🦈", "Hãy ở lại chơi lâu nhé!"],
       typeSpeed: 60, backSpeed: 30, loop: true
     });
+  </script>
 
-    /* ===== Đồng hồ hiện tại ===== */
+  <!-- Clock + uptime -->
+  <script>
     const pad = n => String(n).padStart(2,'0');
     function drawClock(){
       const now = new Date();
@@ -140,84 +120,89 @@
     }
     setInterval(drawClock, 1000); drawClock();
 
-    /* ===== Uptime từ 0h 04/08/2025 ===== */
-    // Lưu ý: tháng trong JS 0-11 → 7 là Tháng 8
-    const startTime = new Date(2025, 7, 4, 0, 0, 0);
+    // Uptime từ 0h 04/08/2025 (JS month 0-based → 7 = Tháng 8)
+    const startTime = new Date(2025,7,4,0,0,0);
     function drawUptime(){
       const now = new Date();
       let s = Math.max(0, Math.floor((now - startTime)/1000));
       const d = Math.floor(s/86400); s%=86400;
-      const h = Math.floor(s/3600); s%=3600;
-      const m = Math.floor(s/60);   s%=60;
+      const h = Math.floor(s/3600);  s%=3600;
+      const m = Math.floor(s/60);    s%=60;
       document.getElementById('existTime').textContent =
         `Website đã tồn tại: ${d} ngày ${h} giờ ${m} phút ${s} giây`;
     }
     setInterval(drawUptime, 1000); drawUptime();
+  </script>
 
-    /* ===== Hố đen theo chuột (mượt, đi sau nhẹ) ===== */
-    /* ====== Black hole nhỏ neon ====== */
-.black-hole {
-  position: fixed;
-  width: 64px;
-  height: 64px;
-  pointer-events: none;
-  z-index: 5;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 50%,
-    rgba(0,0,0,0.88) 0%,
-    rgba(0,0,0,0.55) 38%,
-    rgba(0,0,0,0.20) 66%,
-    rgba(0,0,0,0) 82%);
-  filter: blur(6px) drop-shadow(0 0 6px #00ffffcc);
-  animation: spin 9s linear infinite, pulse 4.5s ease-in-out infinite;
-  opacity: .95;
-}
+  <!-- Hố đen theo chuột -->
+  <script>
+    const hole = document.getElementById('blackHole');
+    let mouseX = innerWidth/2, mouseY = innerHeight/2, hx = mouseX, hy = mouseY;
+    addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    const easing = 0.10; // 0.08 = chậm & mượt hơn; 0.14 = nhanh hơn
+    (function loop(){
+      hx += (mouseX - hx) * easing;
+      hy += (mouseY - hy) * easing;
+      hole.style.left = hx + 'px';
+      hole.style.top  = hy + 'px';
+      requestAnimationFrame(loop);
+    })();
+  </script>
 
-
-    /* ===== Audio: autoplay an toàn + nút bật + slider volume ===== */
-    const audio = document.getElementById('bgMusic');
-    const vol   = document.getElementById('volumeSlider');
-    const playBtn = document.getElementById('playBtn');
-
-    function applyVolume(){ audio.volume = vol.value/100; }
-    vol.addEventListener('input', applyVolume);
-
-    async function tryPlay(){
-      applyVolume();
-      try{
-        audio.muted = false;
-        await audio.play();
-        playBtn.textContent = 'Tạm dừng';
-      }catch(e){
-        // nếu vẫn bị chặn, yêu cầu user bấm nút
-        playBtn.textContent = 'Bật nhạc';
-      }
+  <!-- Nhạc nền YouTube: IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let ytPlayer;
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('yt-music', {
+        videoId: '0tFUfuEhh28', // Lệ Lưu Ly
+        playerVars: {
+          autoplay: 1,
+          loop: 1,                  // cần playlist để loop
+          playlist: '0tFUfuEhh28',  // lặp video này
+          controls: 0,
+          modestbranding: 1
+        },
+        events: { onReady: onMusicReady }
+      });
     }
 
-    // Khi bấm nút: nếu đang pause → play; đang play → pause
-    playBtn.addEventListener('click', async ()=>{
-      if (audio.paused){
-        await tryPlay();
-      } else {
-        audio.pause();
-        playBtn.textContent = 'Phát nhạc';
-      }
-    });
+    function onMusicReady() {
+      const slider = document.getElementById('volumeSlider');
+      const btn = document.getElementById('playBtn');
 
-    // Thử bỏ mute sau khi load, nhưng nếu bị chặn thì người dùng bấm nút
-    window.addEventListener('load', async ()=>{
-      // Nếu bạn muốn tự phát luôn sau tương tác đầu tiên của user:
-      const onFirstInteract = async ()=>{
-        await tryPlay();
-        removeEventListener('click', onFirstInteract);
-        removeEventListener('keydown', onFirstInteract);
-        removeEventListener('touchstart', onFirstInteract);
+      // volume mặc định
+      ytPlayer.setVolume(parseInt(slider.value, 10));
+
+      // slider volume
+      slider.addEventListener('input', (e) => {
+        ytPlayer.setVolume(parseInt(e.target.value, 10));
+      });
+
+      // nút play/pause
+      btn.addEventListener('click', () => {
+        const state = ytPlayer.getPlayerState();
+        if (state !== YT.PlayerState.PLAYING) {
+          ytPlayer.playVideo();
+          btn.textContent = 'Tạm dừng';
+        } else {
+          ytPlayer.pauseVideo();
+          btn.textContent = 'Phát nhạc';
+        }
+      });
+
+      // cố gắng phát tự động khi có tương tác đầu tiên (vượt chặn autoplay)
+      const tryPlay = () => {
+        ytPlayer.playVideo();
+        btn.textContent = 'Tạm dừng';
+        window.removeEventListener('click', tryPlay);
+        window.removeEventListener('keydown', tryPlay);
+        window.removeEventListener('touchstart', tryPlay);
       };
-      addEventListener('click', onFirstInteract);
-      addEventListener('keydown', onFirstInteract);
-      addEventListener('touchstart', onFirstInteract);
-    });
+      window.addEventListener('click', tryPlay);
+      window.addEventListener('keydown', tryPlay);
+      window.addEventListener('touchstart', tryPlay);
+    }
   </script>
 </body>
 </html>
