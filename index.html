@@ -1,204 +1,169 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>khangshark123 - Trang cá nhân</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('https://i.pinimg.com/1200x/53/f6/8f/53f68f33cf6ef24468c05667c2982c46.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      text-align: center;
-      padding-top: 100px;
-      position: relative;
-      overflow: hidden;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>khangshark123 - Trang cá nhân</title>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<style>
+  :root{
+    --bar-bg: rgba(0,0,0,.55);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:system-ui,Segoe UI,Arial,sans-serif; color:#fff; text-align:center;
+    background:url('https://i.pinimg.com/1200x/53/f6/8f/53f68f33cf6ef24468c05667c2982c46.jpg') center/cover fixed no-repeat;
+    padding-top:118px; overflow-x:hidden;
+  }
+  body::before{content:""; position:fixed; inset:0; background:linear-gradient(180deg, rgba(20,40,80,.45), rgba(20,40,80,.45)); z-index:-1}
+  /* Top bar */
+  .topbar{
+    position:fixed; inset:0 auto auto 0; width:100%; z-index:1000;
+    background:var(--bar-bg); backdrop-filter: blur(6px); padding:10px 12px;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+  }
+  .clock{font-weight:800; font-size:28px; letter-spacing:1px}
+  .uptime{font-size:13px; color:#ffe66d}
+  /* Content */
+  .wrap{max-width:900px; margin:22px auto 60px; padding:0 16px}
+  h1{font-size:48px; margin:16px 0 8px}
+  p.lead{font-size:18px; opacity:.95; margin:0 0 18px}
+  iframe{width:100%; max-width:560px; height:315px; border:0; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.35)}
+  .btn{display:inline-block; margin:16px 0; padding:10px 18px; border-radius:10px; background:#fff; color:#254; border:none; cursor:pointer}
+  /* Audio controls row */
+  .audio-row{margin-top:10px; display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap}
+  .audio-row input[type=range]{width:200px}
+  .notice{font-size:12px; opacity:.85}
+  footer{margin:40px 0 24px; color:#ddd; font-size:14px}
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(to right, rgba(30, 60, 114, 0.6), rgba(42, 82, 152, 0.6));
-      z-index: -1;
-    }
-
-    /* Đồng hồ + bộ đếm */
-    .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.5);
-      padding: 5px 0;
-      font-size: 1.8em;
-      font-weight: bold;
-      color: #fff;
-      z-index: 1000;
-    }
-    .exist-time {
-      font-size: 0.7em;
-      font-weight: normal;
-      color: #ffeb3b;
-    }
-
-    h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
-      min-height: 60px;
-    }
-
-    .typed-cursor {
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #fff;
-    }
-
-    p {
-      font-size: 1.2em;
-      max-width: 500px;
-      margin: 0 auto 20px;
-    }
-
-    .button {
-      margin: 15px;
-      padding: 10px 20px;
-      font-size: 1em;
-      border: none;
-      border-radius: 5px;
-      background-color: #ffffff;
-      color: #2a5298;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .button:hover {
-      background-color: #dcdcdc;
-    }
-
-    iframe {
-      margin: 30px 0;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-    }
-
-    .links {
-      margin-top: 20px;
-      line-height: 1.8;
-      font-size: 1em;
-    }
-
-    a {
-      color: #ffeb3b;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      margin-top: 40px;
-      font-size: 0.9em;
-      color: #ccc;
-    }
-
-    /* Hố đen */
-    .black-hole {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      background: radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 70%, transparent 100%);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.05s linear;
-    }
-  </style>
+  /* Black hole */
+  .black-hole{
+    position:fixed; width:78px; height:78px; pointer-events:none; z-index:10;
+    transform:translate(-50%, -50%); border-radius:50%;
+    background:radial-gradient(circle at 50% 50%,
+      rgba(0,0,0,.88) 0%,
+      rgba(0,0,0,.55) 38%,
+      rgba(0,0,0,.18) 66%,
+      rgba(0,0,0,0) 82%);
+    filter: blur(10px);
+    animation:spin 8s linear infinite, pulse 4s ease-in-out infinite;
+    opacity:.95;
+  }
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  @keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.03)}}
+</style>
 </head>
 <body>
 
-  <!-- Đồng hồ + thời gian tồn tại -->
-  <div class="top-bar">
-    <div id="clock"></div>
-    <div class="exist-time" id="existTime"></div>
-  </div>
+<!-- Top bar: clock + uptime -->
+<div class="topbar">
+  <div id="clock" class="clock">00:00:00</div>
+  <div id="uptime" class="uptime">Website đã tồn tại: —</div>
+</div>
 
+<!-- Black hole -->
+<div id="blackHole" class="black-hole"></div>
+
+<div class="wrap">
   <h1><span id="typed-text"></span></h1>
-  <p>Mình là <strong>Tuan Khang <3</strong> — Khangshark123 profile 🦈</p>
+  <p class="lead">Mình là <strong>Tuan Khang &lt;3</strong> — Khangshark123 profile 🦈</p>
 
-  <iframe width="560" height="315" 
-    src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=0&loop=1&playlist=dr147S_qAZE" 
-    title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
+  <!-- Video -->
+  <iframe
+    src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=0&loop=1&playlist=dr147S_qAZE"
+    allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-  <!-- Nhạc nền MP3 -->
-  <audio autoplay loop>
-    <source src="https://cdn.discordapp.com/attachments/1402275121955344516/1402305861367500881/ssvid.net--LE-LUU-LY-VU-PHUNG-TIEN-x-DT-TAP.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Audio controls -->
+  <div class="audio-row">
+    <!-- Trình phát có controls để có nút volume mặc định của trình duyệt -->
+    <audio id="bgMusic" controls autoplay loop muted controlsList="nodownload noplaybackrate">
+      <source src="https://cdn.discordapp.com/attachments/1402275121955344516/1402305861367500881/ssvid.net--LE-LUU-LY-VU-PHUNG-TIEN-x-DT-TAP.mp3" type="audio/mpeg">
+    </audio>
 
-  <button class="button" onclick="alert('Cảm ơn bạn đã ghé thăm profile của tôi...!')">Click here...!</button>
+    <!-- Nút bật nhạc khi autoplay bị chặn -->
+    <button id="playBtn" class="btn" style="display:none">🔊 Bật nhạc</button>
 
-  <div class="links">
-    📧 Gmail: <a href="mailto:khangsadboy2607@gmail.com">khangsadboy2607@gmail.com</a><br>
-    📘 Facebook: <a href="https://www.facebook.com/tuan.khang.374463/" target="_blank">facebook.com/tuan.khang.374463</a><br>
-    💬 Discord: <strong>khangshark123</strong>
+    <!-- Slider volume riêng (tuỳ chọn) -->
+    <label for="vol">Âm lượng:</label>
+    <input id="vol" type="range" min="0" max="100" value="70">
   </div>
+  <div class="notice">(Nếu nhạc chưa phát, bấm “Bật nhạc” một lần để cho phép trình duyệt phát âm thanh.)</div>
 
-  <footer>&copy; 2025 • Create by Tuan Khang 🦈💢</footer>
+  <button class="btn" onclick="alert('Cảm ơn bạn đã ghé thăm profile của tôi...!')">Click here...!</button>
 
-  <!-- Hố đen -->
-  <div class="black-hole" id="blackHole"></div>
+  <p class="lead">
+    📧 Gmail: <a href="mailto:khangsadboy2607@gmail.com" style="color:#ffeb3b">khangsadboy2607@gmail.com</a> ·
+    📘 <a href="https://www.facebook.com/tuan.khang.374463/" target="_blank" style="color:#ffeb3b">Facebook</a> ·
+    💬 Discord: <strong>khangshark123</strong>
+  </p>
+</div>
 
-  <script>
-    // Typed text
-    new Typed("#typed-text", {
-      strings: ["Wellcommee !!!", "Chào mừng đến với profile KhangShark123 🦈", "Hãy ở lại chơi lâu nhé!"],
-      typeSpeed: 60,
-      backSpeed: 30,
-      loop: true
-    });
+<footer>&copy; 2025 • Create by Tuan Khang 🦈💢</footer>
 
-    // Đồng hồ
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent =
-        now.toLocaleTimeString("vi-VN");
+<script>
+  // Typed
+  new Typed("#typed-text", {
+    strings: ["Chào mừng đến với profile!", "KhangShark123 🦈", "Chúc bạn nghe nhạc vui vẻ!"],
+    typeSpeed: 60, backSpeed: 30, loop: true
+  });
+
+  // Clock + uptime (từ 0h 04/08/2025)
+  function pad(n){return String(n).padStart(2,'0')}
+  function drawClock(){
+    const now=new Date();
+    document.getElementById('clock').textContent =
+      `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  }
+  function drawUptime(){
+    const start=new Date(2025,7,4,0,0,0); // 0-index month → 7 = August
+    const now=new Date();
+    let s=Math.max(0,Math.floor((now-start)/1000));
+    const d=Math.floor(s/86400); s%=86400;
+    const h=Math.floor(s/3600); s%=3600;
+    const m=Math.floor(s/60);   s%=60;
+    document.getElementById('uptime').textContent =
+      `Website đã tồn tại: ${d} ngày ${h} giờ ${m} phút ${s} giây`;
+  }
+  setInterval(()=>{drawClock(); drawUptime();},1000);
+  drawClock(); drawUptime();
+
+  // Black hole follow
+  const hole=document.getElementById('blackHole');
+  let mouseX=innerWidth/2, mouseY=innerHeight/2, hx=mouseX, hy=mouseY;
+  addEventListener('mousemove',e=>{mouseX=e.clientX; mouseY=e.clientY;});
+  const easing=0.10; // nhỏ hơn = đi sau xa hơn, mượt hơn
+  (function loop(){
+    hx += (mouseX-hx)*easing; hy += (mouseY-hy)*easing;
+    hole.style.left = hx+'px'; hole.style.top = hy+'px';
+    requestAnimationFrame(loop);
+  })();
+
+  // Audio autoplay handling
+  const audio=document.getElementById('bgMusic');
+  const vol=document.getElementById('vol');
+  const playBtn=document.getElementById('playBtn');
+
+  // set volume ban đầu và thử unmute
+  function applyVolume(){ audio.volume = vol.value/100; }
+  vol.addEventListener('input', applyVolume);
+
+  async function tryPlay(){
+    applyVolume();
+    try{
+      audio.muted=false;
+      await audio.play();
+      playBtn.style.display='none';
+    }catch(e){
+      // bị chặn → hiện nút cho user bấm
+      playBtn.style.display='inline-block';
     }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Thời gian tồn tại
-    function updateExistTime() {
-      const start = new Date("2025-08-04T00:00:00");
-      const now = new Date();
-      let diff = Math.floor((now - start) / 1000);
-      const days = Math.floor(diff / 86400);
-      diff %= 86400;
-      const hours = Math.floor(diff / 3600);
-      diff %= 3600;
-      const minutes = Math.floor(diff / 60);
-      const seconds = diff % 60;
-
-      document.getElementById("existTime").textContent =
-        `Website đã tồn tại: ${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
-    }
-    setInterval(updateExistTime, 1000);
-    updateExistTime();
-
-    // Hố đen di theo chuột
-    const blackHole = document.getElementById("blackHole");
-    document.addEventListener("mousemove", (e) => {
-      setTimeout(() => {
-        blackHole.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      }, 30); // Delay nhỏ cho cảm giác mượt
-    });
-  </script>
+  }
+  // khi người dùng tương tác bất kỳ, thử phát lại
+  ['click','touchstart','keydown'].forEach(ev=>addEventListener(ev, tryPlay, {once:true}));
+  // thử tự động sau khi load
+  window.addEventListener('load', tryPlay);
+</script>
 </body>
 </html>
+
 
