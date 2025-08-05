@@ -4,100 +4,166 @@
   <meta charset="UTF-8">
   <title>khangshark123 - Trang cá nhân</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Thư viện Typed.js -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #1e3c72, #2a5298);
+      background: url('https://i.pinimg.com/1200x/53/f6/8f/53f68f33cf6ef24468c05667c2982c46.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 60px;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
+      padding-top: 100px; /* chừa chỗ cho đồng hồ */
       overflow-x: hidden;
       position: relative;
     }
-    h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
-      min-height: 60px;
-    }
-    .typed-cursor {
-      font-weight: bold;
-      font-size: 1.2em;
-      color: #fff;
-    }
-    p {
-      font-size: 1.2em;
-      max-width: 500px;
-      margin-bottom: 20px;
-    }
-    iframe {
-      margin: 30px 0 10px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      max-width: 90%;
-    }
-    .links {
-      margin-top: 20px;
-      line-height: 1.8;
-      font-size: 1em;
-    }
-    a {
-      color: #ffeb3b;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 0.9em;
-      color: #ccc;
-    }
-    /* Hố đen */
-    #blackhole {
+    /* lớp phủ */
+    body::before {
+      content: "";
       position: fixed;
-      width: 60px;
-      height: 60px;
-      background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
+      inset: 0;
+      background: linear-gradient(to right, rgba(30, 60, 114, 0.55), rgba(42, 82, 152, 0.55));
+      z-index: -1;
     }
-    /* Bộ đếm */
-    #uptime {
-      font-size: 1.4em;
-      margin-top: 15px;
-      min-height: 30px;
-      white-space: nowrap;
+
+    h1 { font-size: 3em; margin-bottom: 10px; min-height: 60px; }
+    .typed-cursor { font-weight: bold; font-size: 1.2em; color: #fff; }
+
+    p { font-size: 1.2em; max-width: 500px; margin-bottom: 20px; }
+
+    .button {
+      margin: 15px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #ffffff;
+      color: #2a5298;
+      cursor: pointer;
+      transition: transform .15s ease, background .3s ease;
+    }
+    .button:hover { background-color: #eaeaea; transform: translateY(-1px); }
+
+    iframe { margin: 30px 0; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.4); }
+
+    .links { margin-top: 20px; line-height: 1.8; font-size: 1em; }
+    a { color: #ffeb3b; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    footer { margin-top: 40px; font-size: 0.9em; color: #ccc; }
+
+    .hidden-audio { width: 0; height: 0; opacity: 0; pointer-events: none; position: absolute; }
+
+    .volume-control { margin-top: 10px; display: flex; align-items: center; gap: 10px; color: #fff; justify-content: center; }
+    input[type=range] { width: 180px; }
+
+    /* -------- Đồng hồ đẹp ---------- */
+    .clock-wrap{
+      position: fixed;
+      top: 20px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      user-select: none;
+      pointer-events: none;
+    }
+    .clock {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 56px;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-shadow:
+         0 0 6px rgba(255,255,255,.8),
+         0 0 18px rgba(255, 65, 65, .8),
+         0 0 32px rgba(255, 0, 0, .6);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.5));
+    }
+    .clock-sub {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      opacity: .9;
+      margin-top: 4px;
+      text-align: center;
+      text-shadow: 0 0 6px rgba(0,0,0,.6);
+    }
+
+    /* -------- Hố đen đi theo chuột ---------- */
+    .black-hole {
+      position: fixed;
+      width: 320px; height: 320px;          /* chỉnh kích thước */
+      pointer-events: none;                  /* không chặn click */
+      z-index: 5;
+      transform: translate(-50%, -50%);
+      /* lớp tối mượt + viền sáng nhẹ để “ăn” nền */
+      background:
+        radial-gradient(circle at 50% 50%,
+           rgba(0,0,0,0.85) 0%,
+           rgba(0,0,0,0.75) 25%,
+           rgba(0,0,0,0.35) 55%,
+           rgba(0,0,0,0.0) 70%);
+      filter: blur(22px) saturate(1.1);
+      /* nhẹ nhàng thở (pulse) cho sinh động */
+      animation: pulse 3.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: translate(-50%, -50%) scale(1.00); }
+      50%     { transform: translate(-50%, -50%) scale(1.04); }
+    }
+    /* viền xoáy mờ thêm chiều sâu (tùy chọn) */
+    .black-hole::after{
+      content:"";
+      position:absolute; inset:0;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+          rgba(255,255,255,0.08) 0%,
+          rgba(255,255,255,0.04) 35%,
+          rgba(255,255,255,0.00) 70%);
+      mix-blend-mode: overlay;
+      filter: blur(14px);
     }
   </style>
 </head>
 <body>
 
-  <div id="blackhole"></div>
+  <!-- Đồng hồ -->
+  <div class="clock-wrap">
+    <div id="clock" class="clock">00:00:00</div>
+    <div id="clockSub" class="clock-sub">—</div>
+  </div>
+
+  <!-- Hố đen theo chuột -->
+  <div id="blackHole" class="black-hole"></div>
 
   <h1><span id="typed-text"></span></h1>
-  <p>Mình là <strong>Tuan Khang <3</strong> — Khangshark123 profile 🦈</p>
 
-  <!-- Video -->
-  <iframe width="560" height="315" 
-    src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=0&loop=1&playlist=dr147S_qAZE" 
-    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  <p>Mình là <strong>Tuan Khang &lt;3</strong> — Khangshark123 profile 🦈</p>
+
+  <!-- Video chính -->
+  <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=0&loop=1&playlist=dr147S_qAZE"
+    title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
   </iframe>
 
-  <!-- Bộ đếm -->
-  <div id="uptime"></div>
-
-  <!-- Nhạc nền -->
-  <iframe class="hidden-audio" style="width:0;height:0;opacity:0;position:absolute;"
-    src="https://www.youtube.com/embed/0tFUfuEhh28?autoplay=1&mute=0&loop=1&playlist=0tFUfuEhh28"
+  <!-- Nhạc nền ẩn (có thể điều chỉnh âm lượng) -->
+  <iframe id="bg-music" class="hidden-audio"
+    src="https://www.youtube.com/embed/0tFUfuEhh28?enablejsapi=1&autoplay=1&mute=0&loop=1&playlist=0tFUfuEhh28"
     allow="autoplay">
   </iframe>
+
+  <div class="volume-control">
+    🔊 Âm lượng:
+    <input type="range" id="volumeSlider" min="0" max="100" value="100">
+  </div>
+
+  <button class="button" onclick="alert('Cảm ơn bạn đã ghé thăm profile của tôi...!')">Click here...!</button>
 
   <div class="links">
     📧 Gmail: <a href="mailto:khangsadboy2607@gmail.com">khangsadboy2607@gmail.com</a><br>
@@ -108,7 +174,7 @@
   <footer>&copy; 2025 • Create by Tuan Khang 🦈💢</footer>
 
   <script>
-    // Typed text
+    /* Typed heading */
     new Typed("#typed-text", {
       strings: ["Wellcommee !!!", "Chào mừng đến với profile KhangShark123 🦈", "Hãy ở lại chơi lâu nhé!"],
       typeSpeed: 60,
@@ -116,42 +182,70 @@
       loop: true
     });
 
-    // Hố đen theo chuột
-    const blackhole = document.getElementById('blackhole');
-    document.addEventListener('mousemove', e => {
-      blackhole.style.left = `${e.clientX - 30}px`;
-      blackhole.style.top = `${e.clientY - 30}px`;
+    /* YouTube volume (IFrame API) */
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('bg-music', {
+        events: {
+          'onReady': () => {
+            document.getElementById("volumeSlider").addEventListener("input", (e) => {
+              player.setVolume(parseInt(e.target.value));
+            });
+          }
+        }
+      });
+    }
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+
+    /* ===== Đồng hồ kỹ thuật số ===== */
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function updateClock(){
+      const now = new Date();
+      const h = pad(now.getHours());
+      const m = pad(now.getMinutes());
+      const s = pad(now.getSeconds());
+      const days = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"];
+      const dateStr = `${days[now.getDay()]}, ${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+      document.getElementById('clockSub').textContent = dateStr;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ===== Hố đen theo chuột (mượt, có độ trễ) ===== */
+    const hole = document.getElementById('blackHole');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let holeX = mouseX, holeY = mouseY;
+
+    // theo chuột
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
 
-    // Bộ đếm thời gian tồn tại
-    const startDate = new Date("2025-08-03T00:00:00");
-    const uptimeEl = document.getElementById("uptime");
-
-    function updateUptime() {
-      const now = new Date();
-      let diff = Math.floor((now - startDate) / 1000);
-
-      const days = Math.floor(diff / (3600*24));
-      diff %= 3600*24;
-      const hours = Math.floor(diff / 3600);
-      diff %= 3600;
-      const minutes = Math.floor(diff / 60);
-      const seconds = diff % 60;
-
-      // Hiệu ứng gõ lại
-      uptimeEl.textContent = "";
-      const text = `Trang web đã tồn tại: ${days} ngày ${hours.toString().padStart(2,'0')} giờ ${minutes.toString().padStart(2,'0')} phút ${seconds.toString().padStart(2,'0')} giây`;
-      let i = 0;
-      const typeInterval = setInterval(() => {
-        uptimeEl.textContent += text[i];
-        i++;
-        if (i >= text.length) clearInterval(typeInterval);
-      }, 20);
+    // theo cảm giác mượt: nội suy 0.12 (giảm nếu muốn chậm hơn)
+    const easing = 0.12; // 0.08–0.18 là đẹp
+    function tick(){
+      holeX += (mouseX - holeX) * easing;
+      holeY += (mouseY - holeY) * easing;
+      // dịch tâm (kích thước 320 => offset 160)
+      hole.style.left = holeX + 'px';
+      hole.style.top  = holeY + 'px';
+      requestAnimationFrame(tick);
     }
+    tick();
 
-    setInterval(updateUptime, 1000);
-    updateUptime();
+    // phản ứng khi dừng chuột: mờ đi nhẹ cho “đã mắt”
+    let idleTimer;
+    const setOpacity = (o)=> hole.style.opacity = o;
+    window.addEventListener('mousemove', ()=>{
+      setOpacity(1);
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(()=> setOpacity(0.85), 500);
+    });
   </script>
 </body>
 </html>
-
