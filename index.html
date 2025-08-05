@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Khangshark123 - Trang cá nhân</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      color: white;
+      text-align: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    h1 {
+      font-size: 3em;
+      margin: 20px 0 10px;
+    }
+    p {
+      font-size: 1.2em;
+    }
+    iframe, video {
+      max-width: 90%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      margin: 20px 0;
+    }
+    .links {
+      margin-top: 20px;
+      font-size: 1em;
+    }
+    a {
+      color: #ffeb3b;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #ccc;
+    }
+    #clock {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    #blackhole {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    #musicBtn {
+      background-color: #fff;
+      color: #2a5298;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    #musicBtn:hover {
+      background-color: #dcdcdc;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="blackhole"></div>
+
+  <h1><span id="typed-text"></span></h1>
+  <p>Mình là <strong>Tuan Khang <3</strong> — Khangshark123 profile 🦈</p>
+  <div id="clock"></div>
+
+  <!-- Video tạm dùng YouTube, sau có thể thay MP4 sạch -->
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=1&loop=1&playlist=dr147S_qAZE" 
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+  <!-- Nhạc nền -->
+  <audio id="bgMusic" loop autoplay>
+    <source src="https://files.catbox.moe/5zt9k0.mp3" type="audio/mpeg">
+  </audio>
+  <button id="musicBtn">Tắt nhạc</button>
+
+  <div class="links">
+    📧 Gmail: <a href="mailto:khangsadboy2607@gmail.com">khangsadboy2607@gmail.com</a><br>
+    📘 Facebook: <a href="https://www.facebook.com/tuan.khang.374463/" target="_blank">facebook.com/tuan.khang.374463</a><br>
+    💬 Discord: <strong>khangshark123</strong>
+  </div>
+
+  <footer>&copy; 2025 • Create by Tuan Khang 🦈💢</footer>
+
+  <script>
+    // Typed text
+    new Typed("#typed-text", {
+      strings: ["Wellcommee !!!", "Chào mừng đến với profile KhangShark123 🦈", "Hãy ở lại chơi lâu nhé!"],
+      typeSpeed: 60,
+      backSpeed: 30,
+      loop: true
+    });
+
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = 
+        now.toLocaleTimeString('vi-VN');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Blackhole follow mouse
+    const blackhole = document.getElementById('blackhole');
+    document.addEventListener('mousemove', e => {
+      blackhole.style.left = `${e.clientX - 25}px`;
+      blackhole.style.top = `${e.clientY - 25}px`;
+    });
+
+    // Music toggle
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    musicBtn.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.textContent = 'Tắt nhạc';
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = 'Bật nhạc';
+      }
+    });
+  </script>
+
+</body>
+</html>
