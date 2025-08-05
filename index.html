@@ -2,8 +2,9 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Khangshark123 - Trang cá nhân</title>
+  <title>khangshark123 - Trang cá nhân</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Thư viện Typed.js -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <style>
     body {
@@ -12,27 +13,37 @@
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to right, #1e3c72, #2a5298);
       color: white;
-      text-align: center;
-      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
       overflow-x: hidden;
       position: relative;
     }
     h1 {
       font-size: 3em;
-      margin: 20px 0 10px;
+      margin-bottom: 10px;
+      min-height: 60px;
+    }
+    .typed-cursor {
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #fff;
     }
     p {
       font-size: 1.2em;
+      max-width: 500px;
+      margin-bottom: 20px;
     }
-    iframe, video {
-      max-width: 90%;
-      height: auto;
+    iframe {
+      margin: 30px 0 10px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      margin: 20px 0;
+      max-width: 90%;
     }
     .links {
       margin-top: 20px;
+      line-height: 1.8;
       font-size: 1em;
     }
     a {
@@ -47,31 +58,22 @@
       font-size: 0.9em;
       color: #ccc;
     }
-    #clock {
-      font-size: 1.2em;
-      margin-top: 10px;
-    }
+    /* Hố đen */
     #blackhole {
       position: fixed;
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, transparent 70%);
       border-radius: 50%;
       pointer-events: none;
-      z-index: 1000;
+      z-index: 9999;
     }
-    #musicBtn {
-      background-color: #fff;
-      color: #2a5298;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1em;
-      margin-top: 10px;
-    }
-    #musicBtn:hover {
-      background-color: #dcdcdc;
+    /* Bộ đếm */
+    #uptime {
+      font-size: 1.4em;
+      margin-top: 15px;
+      min-height: 30px;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -81,17 +83,21 @@
 
   <h1><span id="typed-text"></span></h1>
   <p>Mình là <strong>Tuan Khang <3</strong> — Khangshark123 profile 🦈</p>
-  <div id="clock"></div>
 
-  <!-- Video tạm dùng YouTube, sau có thể thay MP4 sạch -->
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=1&loop=1&playlist=dr147S_qAZE" 
-    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <!-- Video -->
+  <iframe width="560" height="315" 
+    src="https://www.youtube.com/embed/dr147S_qAZE?autoplay=1&mute=0&loop=1&playlist=dr147S_qAZE" 
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
+
+  <!-- Bộ đếm -->
+  <div id="uptime"></div>
 
   <!-- Nhạc nền -->
-  <audio id="bgMusic" loop autoplay>
-    <source src="https://files.catbox.moe/5zt9k0.mp3" type="audio/mpeg">
-  </audio>
-  <button id="musicBtn">Tắt nhạc</button>
+  <iframe class="hidden-audio" style="width:0;height:0;opacity:0;position:absolute;"
+    src="https://www.youtube.com/embed/0tFUfuEhh28?autoplay=1&mute=0&loop=1&playlist=0tFUfuEhh28"
+    allow="autoplay">
+  </iframe>
 
   <div class="links">
     📧 Gmail: <a href="mailto:khangsadboy2607@gmail.com">khangsadboy2607@gmail.com</a><br>
@@ -110,35 +116,42 @@
       loop: true
     });
 
-    // Clock
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('clock').textContent = 
-        now.toLocaleTimeString('vi-VN');
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Blackhole follow mouse
+    // Hố đen theo chuột
     const blackhole = document.getElementById('blackhole');
     document.addEventListener('mousemove', e => {
-      blackhole.style.left = `${e.clientX - 25}px`;
-      blackhole.style.top = `${e.clientY - 25}px`;
+      blackhole.style.left = `${e.clientX - 30}px`;
+      blackhole.style.top = `${e.clientY - 30}px`;
     });
 
-    // Music toggle
-    const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-    musicBtn.addEventListener('click', () => {
-      if (bgMusic.paused) {
-        bgMusic.play();
-        musicBtn.textContent = 'Tắt nhạc';
-      } else {
-        bgMusic.pause();
-        musicBtn.textContent = 'Bật nhạc';
-      }
-    });
+    // Bộ đếm thời gian tồn tại
+    const startDate = new Date("2025-08-03T00:00:00");
+    const uptimeEl = document.getElementById("uptime");
+
+    function updateUptime() {
+      const now = new Date();
+      let diff = Math.floor((now - startDate) / 1000);
+
+      const days = Math.floor(diff / (3600*24));
+      diff %= 3600*24;
+      const hours = Math.floor(diff / 3600);
+      diff %= 3600;
+      const minutes = Math.floor(diff / 60);
+      const seconds = diff % 60;
+
+      // Hiệu ứng gõ lại
+      uptimeEl.textContent = "";
+      const text = `Trang web đã tồn tại: ${days} ngày ${hours.toString().padStart(2,'0')} giờ ${minutes.toString().padStart(2,'0')} phút ${seconds.toString().padStart(2,'0')} giây`;
+      let i = 0;
+      const typeInterval = setInterval(() => {
+        uptimeEl.textContent += text[i];
+        i++;
+        if (i >= text.length) clearInterval(typeInterval);
+      }, 20);
+    }
+
+    setInterval(updateUptime, 1000);
+    updateUptime();
   </script>
-
 </body>
 </html>
+
